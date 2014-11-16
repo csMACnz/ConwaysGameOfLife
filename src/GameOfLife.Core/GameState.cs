@@ -8,16 +8,14 @@ namespace GameOfLife.Core
 
         public GameState(Dictionary<Cell, State> states)
         {
-            _states = states;
+            _states = new Dictionary<Cell, State>(states);
         }
 
         public State GetState(Cell cell)
         {
-            if (!_states.ContainsKey(cell))
-            {
-                return State.Dead;
-            }
-            return _states[cell];
+            State result;
+            _states.TryGetValue(cell, out result);
+            return result;
         }
     }
 }

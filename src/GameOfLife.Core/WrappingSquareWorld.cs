@@ -3,14 +3,14 @@ using System.Linq;
 
 namespace GameOfLife.Core
 {
-    public class SquareWorld
+    public class WrappingSquareWorld
     {
         private readonly int _width;
         private readonly int _height;
         private readonly Cell[] _cellsArray;
-        private Dictionary<Cell, Position> _cellPositions; 
+        private readonly Dictionary<Cell, Position> _cellPositions; 
 
-        public SquareWorld(int width, int height)
+        public WrappingSquareWorld(int width, int height)
         {
             _width = width;
             _height = height;
@@ -40,28 +40,34 @@ namespace GameOfLife.Core
         public IEnumerable<Cell> GetNeighbours(Cell cell)
         {
             var position = _cellPositions[cell];
-            var arrayIndex = GetIndex(_width, position.Row, position.Column);
             
             var results = new List<Cell>();
-            
-            results.Add(_cellsArray[arrayIndex - 1]);
-            results.Add(_cellsArray[arrayIndex + 1]);
-            results.Add(_cellsArray[arrayIndex - _width]);
-            results.Add(_cellsArray[arrayIndex + _width]);
-
+            var offsets = new[] {-1, 0, 1};
+            foreach (var rowOffset in offsets)
+            {
+                var neighbourRow = (position.Row + rowOffset + _height) % _height;
+                foreach (var columnOffset in offsets)
+                {
+                    var neighbourColumn = (position.Column + columnOffset + _width)%_width;
+                    var neighbourIndex = GetIndex(_width, neighbourRow, neighbourColumn);
+                    var neighbour = _cellsArray[neighbourIndex];
+                    results.Add(neighbour);
+                }
+            }
+            results.Remove(cell);
             return results;
-        } 
-    }
-
-    internal class Position
-    {
-        public Position(int row, int column)
-        {
-            Column = column;
-            Row = row;
         }
 
-        public int Row { get; private set; }
-        public int Column { get; private set; }
+        class Position
+        {
+            public Position(int row, int column)
+            {
+                Column = column;
+                Row = row;
+            }
+
+            public int Row { get; private set; }
+            public int Column { get; private set; }
+        }
     }
 }

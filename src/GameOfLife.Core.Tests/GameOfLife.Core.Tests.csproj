@@ -53,7 +53,7 @@
     <Compile Include="DefaultRulesStateTransformerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameStateTests.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="WrappingSquareWorldTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameOfLife.Core\GameOfLife.Core.csproj">

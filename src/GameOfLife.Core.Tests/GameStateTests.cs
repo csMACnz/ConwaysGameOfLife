@@ -15,6 +15,28 @@ namespace GameOfLife.Core.Tests
         }
 
         [TestMethod]
+        public void GivenAGameStateFromADictionary_WhenIModifyTheDictionary_ThenTheGameStateDoesNotChange()
+        {
+            var dictionary = new Dictionary<Cell, State>();
+            dictionary[new Cell()] = State.Dead;
+            dictionary[new Cell()] = State.Dead;
+            var gameState = new GameState(dictionary);
+            var cell = new Cell();
+            dictionary[cell] = State.Alive;
+            var unknownCellState = gameState.GetState(cell);
+            Assert.AreEqual(unknownCellState, State.Dead);
+        }
+
+        [TestMethod]
+        public void GivenAGameState_WhenIRequestAStateForAnUnknownCell_ThenIExpectAStateOfDead()
+        {
+            var gameState = new GameState(new Dictionary<Cell, State> { { new Cell(), State.Alive }, { new Cell(), State.Alive } });
+
+            var unknownCellState = gameState.GetState(new Cell());
+            Assert.AreEqual(unknownCellState, State.Dead);
+        }
+
+        [TestMethod]
         public void GivenAStateWith2Cells_WhenAskedForTheLiveCellsState_ThenReturnsAliveState()
         {
             var liveCell = new Cell();
