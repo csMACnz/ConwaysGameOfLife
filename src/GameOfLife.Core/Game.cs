@@ -33,5 +33,10 @@ namespace GameOfLife.Core
             }
             return new GameState(inProgressState);
         }
+
+        public State GetState(Cell cell)
+        {
+            return _state.GetState(cell);
+        }
     }
 }

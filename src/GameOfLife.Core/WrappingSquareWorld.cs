@@ -69,5 +69,22 @@ namespace GameOfLife.Core
             public int Row { get; private set; }
             public int Column { get; private set; }
         }
+
+        public GameState CreateState(State[,] states)
+        {
+            var data = new Dictionary<Cell, State>();
+            foreach (var cell in _cellsArray)
+            {
+                var position = _cellPositions[cell];
+                var state = states[position.Row, position.Column];
+                data[cell] = state;
+            }
+            return new GameState(data);
+        }
+
+        public Cell GetCell(int row, int column)
+        {
+            return _cellsArray[GetIndex(_width, row, column)];
+        }
     }
 }
